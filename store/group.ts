@@ -7,27 +7,38 @@ export const state = (): GroupState => ({
         groupName: '',
         description: '',
         isActive: '',
-    }
+    },
+    totalCost: 0,
+    groupInfos: [],
 });
 
 export const getters: GetterTree<GroupState, GroupState> = {
-    get_clicked_user: (state: GroupState): any => state.groupsArray
+    get_clicked_user: (state: GroupState): any => state.groupsArray,
+    get_total_cost: (state: GroupState): number => state.totalCost,
+    get_group_infos: (state: GroupState): any[] => state.groupInfos,
 }
 
 export const actions: ActionTree<GroupState, GroupState> = {
     async fetchGroup({ commit }, payload) {
-        const res = await this.$axios.$get(`${process.env.BASE_URL}/groups/findgroup/${payload}`);
-        commit("SET_CLICKED_GROUP", res);
+        const res = await this.$axios.$get(`${process.env.BASE_URL}/group/findgroup/${payload}`);
+        commit("SET_GROUP_INFOS", res);
     },
     /* async updateUser({commit, state}, payload) {
         const res = await this.$axios.$put(`${process.env.BASE_URL}/users/update/${payload}`, state.groupsArray)
         commit("SET_CLICKED_USER", res);
     } */
+    async fetchTotalCost({ commit }, payload) {
+        const res = await this.$axios.$get(`${process.env.BASE_URL}/group/calculate-total-cost/${payload}`);
+        commit("SET_TOTAL_COST", res);
+    }
 }
 
 export const mutations: MutationTree<GroupState> = {
-    SET_CLICKED_GROUP(state: GroupState, data) {
-        state.groupsArray = data;
+    SET_GROUP_INFOS(state: GroupState, data) {
+        state.groupInfos = data;
+    },
+    SET_TOTAL_COST(state: GroupState, data) {
+        state.totalCost = data;
     }
    /*  SET_MODAL_VISIBLE(state: GroupState, data) {
         state.modalVisible = data;

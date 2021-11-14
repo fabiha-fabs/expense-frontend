@@ -10,9 +10,7 @@
                     {{groupInfos.description}}
                 </b-card-text>
             <b-card-text>
-            <b-tabs card variant="info" active-nav-item-class="font-weight-bold text-success"
-                
-            >
+            <b-tabs card variant="info" active-nav-item-class="font-weight-bold text-success">
                 <b-tab title="Expense Table">
                     <div class="mb-2 mt-2">
                         <b-button v-b-modal.modal-no-backdrop class="float-left mb-1" variant="info" size="sm" 
@@ -21,10 +19,7 @@
                         </b-button>
                     </div>
                     <div class="mb-1 float-right">
-                        <b-avatar href="#" variant="primary" src="~/assets/images/waterdrop1.jpg"></b-avatar>
-                        <b-avatar href="#" variant="info" src="https://placekitten.com/300/300"></b-avatar>
-                        <b-avatar href="#" variant="success" src="~/assets/images/waterdrop.jpg"></b-avatar>
-                        <b-link @click="$bvModal.show('modal-tall')">....</b-link>
+                        Total Cost: {{totalCost}}
                     </div> 
                     <b-table id="expenses-table" 
                     :fields="fields"
@@ -47,8 +42,7 @@
                 </b-tab>
                 <b-tab title="Group Members">
                     <div>
-                        <b-button v-b-modal.modal-tall class="float-left mb-2 mt-2" variant="info" size="sm" 
-                                     >
+                        <b-button v-b-modal.modal-tall class="float-left mb-2 mt-2" variant="info" size="sm">
                             Add User
                         </b-button>
                     </div>
@@ -79,16 +73,16 @@
                     hide-backdrop 
                     content-class="shadow" 
                     hide-footer
-                    @hidden="fetchExpensesForCurrentGroup()">
+                    > <!-- @hidden="fetchExpensesForCurrentGroup()" -->
 
                 <p v-if="`${this.do}` == 'Create Expense'" class="my-2">
-                    <create-expense :group-id="`${groupInfos.groupId}`" 
+                    <create-expense :group-id="$route.params.id" 
                                     :do-action="`${this.do}`" >
                     </create-expense> 
                 </p>
                 <p v-else-if="`${this.do}` == 'Edit Expense'" class="my-2" >
                     <create-expense :expense-id="`${clickedExpenseId}`" 
-                                    :group-id="`${groupInfos.groupId}`" 
+                                    :group-id="$route.params.id" 
                                     :do-action="`${this.do}`" >
                     </create-expense> 
                 </p>
@@ -114,11 +108,10 @@ export default Vue.extend({
     components: { headerMenu, CreateExpense, },
     data() {
         return {
-         fields: ['expenseId', 'expenseName', 'description', 'amount', 'edit', 'remove', 'expenseDate' ,'createdAt'],
-         groupInfos: [],
+         fields: ['expenseId', 'expenseName', 'description', 'amount', 'edit', 'remove', 'expenseDate'],
          clickedExpenseId: null,
          do: '',
-         fieldUsers: ['userId', 'userName', 'emailId', 'contactNo', 'country', 'isActive', 'Remove'],
+         fieldUsers: ['userId', 'userName', 'emailId', 'contactNo', 'country', 'paidDue', 'Remove'],
          detachedUsersArr:{
              userIDsArr: [],
              groupID: '',
@@ -126,33 +119,29 @@ export default Vue.extend({
         }
     },
     computed: {
-    modalVisible: {
-      set(value) {
-        (this as any).$store.commit("expense/SET_MODAL_VISIBLE", value);
-      },
-      get() {
-        return (this as any).$store.getters["expense/get_modal_visible"];
-      }
-    }
+        modalVisible: {
+            set(value) {
+                (this as any).$store.commit("expense/SET_MODAL_VISIBLE", value);
+            },
+            get() {
+                return (this as any).$store.getters["expense/get_modal_visible"];
+            }
+        },
+        groupInfos() {
+            return (this as any).$store.getters["group/get_group_infos"];
+        },
+        totalCost() {
+            return (this as any).$store.getters["group/get_total_cost"];
+        }
   },
     async created() {
-       await this.fetchExpensesForCurrentGroup();
+        await this.$store.dispatch("group/fetchTotalCost", this.$route.params.id);
+        await this.$store.dispatch("group/fetchGroup", this.$route.params.id);
     },
     methods:{
-        async fetchExpensesForCurrentGroup(){
-            await this.$axios.$get(`${process.env.BASE_URL}/group/findgroup/${this.$route.params.id}`)
-            .then((res) => {
-                 this.groupInfos = res ;
-                 console.log(res);
-                })
-            .catch((error) => {
-                console.log(error);
-            });
-        },
         setExpenseId(uID: Number){
             (this as any).clickedExpenseId = uID ;
-                console.log('call set props method:: ', (this as any).clickedExpenseId); 
-                this.modalVisible = true;
+            this.modalVisible = true;
         },
         setAction(doing: any){
             this.do = doing;
@@ -165,7 +154,8 @@ export default Vue.extend({
             .then((res) => {
                 console.log(res);
                  (this as any).toastMessage('success', 'User has been removed..'); 
-                  (this as any).fetchExpensesForCurrentGroup();
+                  //(this as any).fetchExpensesForCurrentGroup();
+                 this.$store.dispatch("group/fetchGroup", this.$route.params.id);
                 })
             .catch((error) => {
                 console.log(error);
@@ -184,7 +174,8 @@ export default Vue.extend({
             .then((res) => {
                 console.log(res);
                  (this as any).toastMessage('success', 'Delete Expense $exID..'); 
-                  (this as any).fetchExpensesForCurrentGroup();
+                 // (this as any).fetchExpensesForCurrentGroup();
+                 this.$store.dispatch("group/fetchGroup", this.$route.params.id);
                 })
             .catch((error) => {
                 console.log(error);

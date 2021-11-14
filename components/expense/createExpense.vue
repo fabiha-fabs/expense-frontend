@@ -71,9 +71,11 @@ export default Vue.extend({
         console.log((this as any).expense.expenseGroup) ;
         
         await (this as any).$axios.$post(`${process.env.BASE_URL}/expense/create`, (this as any).expense)
-            .then(() => {
-                 (this as any).toastMessage('success', 'Expense is created..'); 
-                 (this as any).modalVisible = false;
+            .then(async() => {
+                  (this as any).toastMessage('success', 'Expense is created..'); 
+                  (this as any).modalVisible = false;
+                  await this.$store.dispatch("group/fetchTotalCost", this.$route.params.id);
+                  await this.$store.dispatch("group/fetchGroup", this.$route.params.id);
                 })
             .catch(() => {
                 (this as any).toastMessage('danger', 'Failed to create');

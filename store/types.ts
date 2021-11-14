@@ -5,6 +5,8 @@ export interface UserState {
 
 export interface GroupState {
     groupsArray: {},
+    totalCost: number,
+    groupInfos: any[],
 }
 
 export interface ExpenseState {
