@@ -3,13 +3,13 @@
         <header-menu/>
 
         <b-row class="mt-1 pt-3">
-            <b-col md="4">
-                <div class="clearfix">
-                    <b-img class="pl-2" left src="~/assets/images/me.jpg" alt="Left image" width="200" height="200"> </b-img>
-                </div>
+            <b-col md="3"> 
             </b-col>
-            <b-col md="4">
-            <b-card>
+            <b-col md="6">
+            <b-card style="background-color: #f7f7f7">
+                <div class="photo-container clearfix align-items-center">
+                    <b-img src="~/assets/images/me.jpg" rounded="circle" alt="Center image" width="200" height="200"/>
+                </div>
                 <b-span><h3> {{ profile.userName }} </h3></b-span>
                 <h6>User ID: {{ $store.state.auth.user.userId }} </h6>
                 <b-card-text>
@@ -48,7 +48,7 @@
 
             </b-card>
             </b-col>
-            <b-col md="4"/>
+            <b-col md="3"/>
         </b-row>
     </div>
 </template>

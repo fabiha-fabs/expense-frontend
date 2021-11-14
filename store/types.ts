@@ -4,9 +4,10 @@ export interface UserState {
 }
 
 export interface GroupState {
-    groupsArray: {}
+    groupsArray: {},
 }
 
 export interface ExpenseState {
     modalVisible: boolean,
+    clickedExpense: {},
 }

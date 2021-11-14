@@ -29,8 +29,8 @@
       </div>
       <br><br>
       <div>
-        <b-button type="submit" variant="success" @click.prevent="updatedUserInfo">Update</b-button> 
-        <b-button variant="danger" @click="modalVisible=false">CLose</b-button>
+        <b-button type="submit" variant="success" size="sm" @click.prevent="updatedUserInfo">Update</b-button> 
+        <b-button variant="danger" size="sm" @click="modalVisible=false">CLose</b-button>
       </div>
     </b-form>
       </b-card>

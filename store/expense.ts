@@ -3,29 +3,34 @@ import { namespace } from "vuex-class";
 import { ExpenseState } from "./types";
 
 export const state = (): ExpenseState => ({
-      modalVisible: false
+      modalVisible: false,
+      clickedExpense: {
+        expenseName: '',
+        description: '',
+        amount: 0
+      },
 });
 
 export const getters: GetterTree<ExpenseState, ExpenseState> = {
-    /* get_clicked_user: (state: ExpenseState): any => state.clickedUser, */
+    get_clicked_expense: (state: ExpenseState): any => state.clickedExpense,
     get_modal_visible: (state: ExpenseState): boolean => state.modalVisible
 }
 
 export const actions: ActionTree<ExpenseState, ExpenseState> = {
-    async fetchUser({ commit }, payload) {
-        const res = await this.$axios.$get(`${process.env.BASE_URL}/users/finduser/${payload}`);
-        commit("SET_CLICKED_USER", res);
+    async fetchExpense({ commit }, payload) {
+        const res = await this.$axios.$get(`${process.env.BASE_URL}/expense/findexpense/${payload}`);
+        commit("SET_CLICKED_EXPENSE", res);
     },
-    /* async updateUser({commit, state}, payload) {
-        const res = await this.$axios.$put(`${process.env.BASE_URL}/users/update/${payload}`, state.clickedUser)
-        commit("SET_CLICKED_USER", res);
-    } */
+    async updateExpense({commit, state}, payload) {
+        const res = await this.$axios.$put(`${process.env.BASE_URL}/expense/update/${payload}`, state.clickedExpense)
+        commit("SET_CLICKED_EXPENSE", res);
+    }
 }
 
 export const mutations: MutationTree<ExpenseState> = {
-    /* SET_CLICKED_USER(state: ExpenseState, data) {
-        state.clickedUser = data;
-    }, */
+    SET_CLICKED_EXPENSE(state: ExpenseState, data) {
+        state.clickedExpense = data;
+    },
     SET_MODAL_VISIBLE(state: ExpenseState, data) {
         state.modalVisible = data;
     },

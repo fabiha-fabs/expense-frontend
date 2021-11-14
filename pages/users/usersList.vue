@@ -4,13 +4,13 @@
         <b-container>
         <b-row class="mt-5">
             <b-col md="12">
-                <div class="accordion" role="tablist">
-                    <b-card no-body class="mb-3">
+                <div class="accordion" role="tablist" >
+                    <b-card no-body class="mb-3" style="background-color: #f7f7f7">
                     <b-row>
                         <b-col md="2"  class="m-2">
-                            <span v-b-toggle.accordion-1 block  variant="info" class="font-weight-bold">
+                            <b-button v-b-toggle.accordion-1 block  variant="info" class="font-weight-bold" size="sm">
                                 Filter
-                            </span>
+                            </b-button>
                         </b-col>
                     </b-row>
                     <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
@@ -82,16 +82,14 @@
                     :per-page="filter.perPage"
                     aria-controls="users-table"
                     size="sm"
-                    class="float-right"
-                >
+                    class="float-right">
                 </b-pagination>
             </b-col>
             <b-col md="1" class="float-right">
                 <b-form-select 
                     v-model="filter.perPage" 
                     :options="perPageOptions" 
-                    size="sm" 
-                    >
+                    size="sm">
                 </b-form-select>
             </b-col>
         </b-row>
@@ -149,9 +147,7 @@ export default Vue.extend({
         },
     },
     
-    async created(){
-        // await this.getUsersAll();
-    },
+    async created(){},
     methods:{
         async getUsersAll(){
             await this.$axios.$get(`${process.env.BASE_URL}/users/userall`)
@@ -184,3 +180,27 @@ export default Vue.extend({
     },
 })
 </script>
+<style lang="scss">
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color:coral;
+    border-color: chocolate;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: coral;;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.page-link:focus {
+    z-index: 3;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem orange;
+}
+</style>

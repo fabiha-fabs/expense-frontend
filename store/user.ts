@@ -26,7 +26,11 @@ export const actions: ActionTree<UserState, UserState> = {
     async updateUser({commit, state}, payload) {
         const res = await this.$axios.$put(`${process.env.BASE_URL}/users/update/${payload}`, state.clickedUser)
         commit("SET_CLICKED_USER", res);
-    }
+    },
+    async fetchAllUsers({commit}) {
+        const res = await this.$axios.$get(`${process.env.BASE_URL}/users/userall`);
+        commit("SET_CLICKED_USER", res);
+    },
 }
 
 export const mutations: MutationTree<UserState> = {

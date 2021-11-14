@@ -5,13 +5,14 @@
       <b-row class="mt-3 p-1">
         <b-col v-for="item in groupsList" :key="item.groupId" md="3" class="p-3">
           <b-card-group>
-              <b-card bg-variant="dark" text-variant="white" class="text-center" >
-                <b-card-header><h6>{{ item.groupName }}</h6></b-card-header>
+              <b-card text-variant="white" class="groups-card text-center shadow mb-5" >
+                <b-card-header class="groups-card-header"><h6>{{ item.groupName }}</h6></b-card-header>
+                <b-avatar variant="info" src="~assets/images/icongroups.png" class="mr-2"/>
                 <b-card-text> Status: {{ item.isActive }}</b-card-text>
                 <b-card-text>{{ item.description }} <br> 
                 </b-card-text>
-                
-                <b-button :to="`/groups/${item.groupId}`">Details</b-button>
+                <b-button :to="`/groups/edit/${item.groupId}`" variant="danger" size="sm">Edit</b-button>
+                <b-button :to="`/groups/${item.groupId}`"  size="sm" variant="success">View</b-button>
               </b-card>
           </b-card-group>
         </b-col>
@@ -56,3 +57,11 @@ export default Vue.extend({
     }
 })
 </script>
+<style lang="scss" scoped>
+.groups-card {
+  background-color: #3C0A05;
+}
+.groups-card-header {
+  background-color: #052f3d;
+}
+</style>
