@@ -7,6 +7,7 @@ export interface GroupState {
     groupsArray: {},
     totalCost: number,
     groupInfos: any[],
+    modalVisible: boolean,
 }
 
 export interface ExpenseState {

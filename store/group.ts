@@ -10,12 +10,14 @@ export const state = (): GroupState => ({
     },
     totalCost: 0,
     groupInfos: [],
+    modalVisible: false,
 });
 
 export const getters: GetterTree<GroupState, GroupState> = {
     get_clicked_user: (state: GroupState): any => state.groupsArray,
     get_total_cost: (state: GroupState): number => state.totalCost,
     get_group_infos: (state: GroupState): any[] => state.groupInfos,
+    get_modal_visible: (state: GroupState): boolean => state.modalVisible
 }
 
 export const actions: ActionTree<GroupState, GroupState> = {
@@ -39,10 +41,10 @@ export const mutations: MutationTree<GroupState> = {
     },
     SET_TOTAL_COST(state: GroupState, data) {
         state.totalCost = data;
-    }
-   /*  SET_MODAL_VISIBLE(state: GroupState, data) {
+    },
+    SET_MODAL_VISIBLE(state: GroupState, data) {
         state.modalVisible = data;
-    }, */
+    },
 }
 
 export const userVuexNamespace = namespace("group/");
